@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --color-brand-teal: #2FA8A0;
+  --color-brand-dark: #1F6F73;
+  --color-brand-mint: #A7DCCF;
+  --color-brand-accent: #6BCB77;
+  --color-neutral-light: #F5F7F6;
+  --color-neutral-dark: #333333;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-neutral-dark bg-white antialiased;
+  }
+}
+
+.glass-nav {
+  @apply bg-white/95 backdrop-blur-md border-b border-brand-mint/30 sticky top-0 z-50 shadow-sm;
+}
+
+.hero-gradient {
+  background: radial-gradient(circle at top right, #FFFFFF 0%, #F5F7F6 50%, #A7DCCF 100%);
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-xl hover:shadow-brand-teal/10 hover:-translate-y-1 border border-transparent hover:border-brand-mint/50;
+}
+
+.btn-primary {
+  @apply bg-brand-teal text-white px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-brand-teal/20 hover:bg-brand-dark hover:shadow-brand-dark/30 active:scale-95;
+}
+
+.btn-secondary {
+  @apply bg-white text-brand-teal border-2 border-brand-teal px-8 py-4 rounded-full font-bold transition-all hover:bg-neutral-light hover:text-brand-dark active:scale-95;
+}
+
+.section-mint {
+  @apply bg-brand-mint/10 border-y border-brand-mint/20;
+}
