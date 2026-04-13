@@ -5,6 +5,8 @@ import { COMPANY_INFO } from '../constants';
 
 const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,18 +15,33 @@ const Contact = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError(null);
     
-    // Simulate form submission
-    console.log('Form submitted to crowshine01@gmail.com:', formData);
-    
-    // Clear form and show success
-    setIsSubmitted(true);
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    
-    // Reset success message after 5 seconds
-    setTimeout(() => setIsSubmitted(false), 5000);
+    try {
+      const response = await fetch(`https://formspree.io/${COMPANY_INFO.email}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        const data = await response.json();
+        setError(data.error || 'Something went wrong. Please try again later.');
+      }
+    } catch (err) {
+      setError('Failed to send message. Please check your internet connection.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -155,6 +172,11 @@ const Contact = () => {
                 >
                   <h3 className="text-2xl font-bold text-neutral-dark mb-8">Send us a Message</h3>
                   <form className="space-y-6" onSubmit={handleSubmit}>
+                    {error && (
+                      <div className="p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
+                        {error}
+                      </div>
+                    )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-sm font-semibold text-neutral-dark/70">Full Name *</label>
@@ -219,10 +241,13 @@ const Contact = () => {
                     </div>
                     <button
                       type="submit"
-                      className="w-full bg-brand-teal text-white py-4 rounded-xl font-bold hover:bg-brand-dark transition-all flex items-center justify-center space-x-2 shadow-lg shadow-brand-teal/20"
+                      disabled={isSubmitting}
+                      className={`w-full bg-brand-teal text-white py-4 rounded-xl font-bold transition-all flex items-center justify-center space-x-2 shadow-lg shadow-brand-teal/20 ${
+                        isSubmitting ? 'opacity-70 cursor-not-allowed' : 'hover:bg-brand-dark'
+                      }`}
                     >
-                      <span>Send Message</span>
-                      <Send size={18} />
+                      <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                      {!isSubmitting && <Send size={18} />}
                     </button>
                   </form>
                 </motion.div>

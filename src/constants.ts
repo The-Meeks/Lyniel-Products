@@ -5,7 +5,7 @@ export const COMPANY_INFO = {
   tagline: "Manufacturers of Shoe Care and Household Products e.g. Shoe Cream, Shoe Polish, Leather Dye, Suedes, and Methylated Spirit",
   logo: "https://images.unsplash.com/photo-1620288627223-53302f4e8c70?q=80&w=400&auto=format&fit=crop", // Crow Shine Logo placeholder
   email: "crowshine01@gmail.com",
-  phones: ["0768 944298", "+254 727 538755"],
+  phones: ["+254736022663", "+254714299797"],
   address: {
     street: "Industrial Area RD A, Off Kibo RD",
     estate: "Yakuti Ecovill Industrial Estate, Godown No. 3",
